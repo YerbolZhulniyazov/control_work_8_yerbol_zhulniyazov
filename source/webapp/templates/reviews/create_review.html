@@ -1,0 +1,16 @@
+{% extends 'base.html'%}
+{% block content %}
+    <div class="container">
+        <div style="margin-top: 50px;" class="card">
+            <div class="head_text heading text-center">
+                <p class="main-title-home">Создать отзыв</p>
+            </div>
+           <form action="" method="POST">
+               {% csrf_token%}
+               <div class="form">
+                    {% include 'partial/review_form.html' with button_text='Добавить отзыв' %}
+               </div>
+           </form>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% block title %}Пользователь{% endblock %}
+{% block content %}
+
+<div class="container">
+  <br>
+<br>
+<br>
+<br>
+    <h1>Личная страница пользователя {{ user_obj.username }}</h1>
+    <p>Имя пользователя: {{ user_obj.username }}</p>
+    <p>Имя: {{ user_obj.first_name }}</p>
+    <p>Фамилия: {{ user_obj.last_name }}</p>
+    <p>Почта: {{ user_obj.email }}</p>
+
+ <div class="row">
+     {% if request.user == user_obj%}
+      <div class="col-2 text-center">
+        <a href="{% url 'change' user_obj.pk %}"><button type="submit" class="btn btn-primary btn-block">Редактировать</button></a>
+      </div>
+     <div class="col-2 text-center">
+        <a href="{% url 'password_change' user_obj.pk %}"><button type="submit" class="btn btn-primary btn-block">Смена пароля</button></a>
+    </div>
+     {% endif %}
+ </div>
+
+
+
+    <h2 class="text-center clear">Отзывы:</h2>
+      <div class="table">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Товар</th>
+                <th>Отзыв</th>
+              </tr>
+            </thead>
+            <tbody>
+             {% for review in reviews %}
+                <tr>
+                  <td class="text">{{ review.product }}</td>
+                  <td class="text">{{ review.description }}</td>
+                </tr>
+              {% empty %}
+             <div class="album py-3 bg-light">
+               <div class="container">
+                   <div class="row">
+                          <div class="col">
+                            <div class="card mb-4 box-shadow">
+                              <div class="card-body">
+                                <h3 class="card-text">The user has no reviews!</h3>
+                              </div>
+                            </div>
+                          </div>
+                   </div>
+               </div>
+              </div>
+            {% endfor %}
+            </tbody>
+          </table>
+      </div>
+
+    </div>
+
+{% if is_paginated %}
+  {% include 'partial/pagination.html' %}
+{% endif %}
+
+{% endblock %}

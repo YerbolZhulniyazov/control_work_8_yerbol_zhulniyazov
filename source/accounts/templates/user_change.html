@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load django_bootstrap5 %}
+{% block title %}Edit User{% endblock %}
+
+
+{% block content %}
+
+
+    <div class="container" style="margin-top: 30px">
+            <div class="row d-flex justify-content-center">
+                <div class="col-6 card text-bg-light form-margins">
+    <h1>Change personal data</h1>
+    <form action="{% url 'change' user_obj.pk %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        {% bootstrap_button button_class="btn-secondary" button_type="submit" content='Edit' %}
+        <br>
+    </form>
+</div>
+            </div>
+    </div>
+
+{% endblock %}

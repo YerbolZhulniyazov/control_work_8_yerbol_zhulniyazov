@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block title %}Product Info{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row d-flex justify-content-center card-margin">
+        <div class="col-10 card">
+            <div class="row card-padding">
+                <div class="col-6">
+                    <img src="{{ product.image.url }}" class="img-fluid" alt="{{ product.name }}">
+                </div>
+                <div class="col-6">
+                    <h2>{{ product.name }}</h2>
+                    <p>
+                        {{ product.category }}
+                    </p>
+                    <div class="row margin-buttons">
+                        <div class="col-3">
+                            <a class="btn btn-primary edit-button" href="{% url 'product_update' product.pk %}"
+                               role="button">Edit</a>
+                        </div>
+                        <div class="col-3">
+                            <a class="btn btn-danger" href="{% url 'product_delete' product.pk %}"
+                               role="button">Delete</a>
+                        </div>
+
+                        {% if request.user.is_authenticated %}
+                        <div class="col-3">
+                            <a class="btn btn-primary" href="{% url 'review_create' product.pk %}"
+                               role="button">Добавить отзыв</a>
+                        </div>
+                        {% endif %}
+                        <h3>Средняя оценка</h3>
+                        {% if avg_rate.avg is not None %}
+                        <p>{{ avg_rate.avg }}</p>
+                        {% else %}
+                        <p>0</p>
+                        {% endif %}
+                    </div>
+
+
+                </div>
+                <h2>Отзывы:</h2>
+                <div class="row justify-content-center space-between">
+                    {% for review in reviews %}
+                    <div class="col-6 text-center">
+                        <p>{{ review}}
+                        <p/>
+
+                        <p>Автор: <a href="{% url 'profile' review.author.pk %}">{{ review.author.username }}</a></p>
+
+                    {% if request.user == review.author or request.user.is_superuser %}
+                    <div class="row margin-buttons">
+                        <div class="col-3">
+                            <a href="{% url 'review_delete' review.pk %}">
+                                <button type="submit" class="btn btn-secondary btn-block">Удалить отзыв</button>
+                            </a>
+                        </div>
+                        {% endif %}
+
+                        {% if request.user == review.author or request.user.is_superuser %}
+                        <div class="col-3">
+                            <a href="{% url 'review_edit' review.pk %}">
+                                <button type="submit" class="btn btn-secondary btn-block">Редактировать</button>
+                            </a>
+                        </div>
+                    </div>
+
+                    {% endif %}
+
+                </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}
